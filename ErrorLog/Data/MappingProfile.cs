@@ -11,8 +11,12 @@ namespace ErrorLog.Data
     {
         public MappingProfile()
         {
-            CreateMap<App, AppModel>();
-            CreateMap<Log, LogModel>();
+            CreateMap<App, AppModel>()
+                .ReverseMap();
+
+            CreateMap<Log, LogModel>()
+                .ReverseMap();
+
             CreateMap<Log, AppLogModel>();
         }
     }

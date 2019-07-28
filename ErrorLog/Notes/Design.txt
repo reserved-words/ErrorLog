@@ -1,4 +1,5 @@
-﻿http://.../api/logs
+﻿
+http://.../api/logs
 http://.../api/logs?level=error
 
 http://.../api/logs/12345
@@ -10,3 +11,16 @@ http://.../api/apps/Whip/logs
 http://.../api/apps/Whip/logs?level=info
 
 http://.../api/reloadconfig
+
+RESOURCE			GET				POST			PUT				DELETE
+/apps				Get list		Create item		Update batch	Error
+					Return list		Return item		Return code		Return code
+
+/apps/name			Get item		Error			Update item		Delete item
+					Return list		Return code		Return item		Return code
+
+/logs				Get list		Create item		Update batch	Error
+					Return list		Return item		Return code		Return code
+
+/logs/123			Get item		Error			Update item		Delete item
+					Return list		Return code		Return item		Return code
