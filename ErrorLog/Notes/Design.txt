@@ -1,0 +1,12 @@
+﻿http://.../api/logs
+http://.../api/logs?level=error
+
+http://.../api/logs/12345
+http://.../api/logs/12345?level=warning
+
+http://.../api/apps
+http://.../api/apps/Whip
+http://.../api/apps/Whip/logs
+http://.../api/apps/Whip/logs?level=info
+
+http://.../api/reloadconfig

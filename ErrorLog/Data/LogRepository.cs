@@ -57,7 +57,7 @@ namespace ErrorLog.Data
             return await query.ToArrayAsync();
         }
 
-        public async Task<App> GetAppAsync(int appId, bool includeLogs = false)
+        public async Task<App> GetAppAsync(string moniker, bool includeLogs = false)
         {
             IQueryable<App> query = _context.Apps;
 
@@ -67,12 +67,12 @@ namespace ErrorLog.Data
             }
 
             // Query It
-            query = query.Where(c => c.Id == appId);
+            query = query.Where(c => c.Moniker == moniker);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Log> GetLogByAppAsync(int appId, int logId, bool includeAppDetails = false)
+        public async Task<Log> GetLogByAppAsync(string moniker, int logId, bool includeAppDetails = false)
         {
             IQueryable<Log> query = _context.Logs;
 
@@ -84,12 +84,12 @@ namespace ErrorLog.Data
 
             // Add Query
             query = query
-              .Where(t => t.Id == logId && t.App.Id == appId);
+              .Where(t => t.Id == logId && t.App.Moniker == moniker);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Log[]> GetLogsByAppAsync(int appId, bool includeAppDetails = false)
+        public async Task<Log[]> GetLogsAsync(bool includeAppDetails = false)
         {
             IQueryable<Log> query = _context.Logs;
 
@@ -100,8 +100,38 @@ namespace ErrorLog.Data
             }
 
             query = query
-              .Where(t => t.App.Id == appId)
               .OrderByDescending(t => t.Timestamp);
+
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Log[]> GetLogsByAppAsync(string moniker, bool includeAppDetails = false)
+        {
+            IQueryable<Log> query = _context.Logs;
+
+            if (includeAppDetails)
+            {
+                query = query
+                  .Include(t => t.App);
+            }
+
+            query = query
+              .Where(t => t.App.Moniker == moniker)
+              .OrderByDescending(t => t.Timestamp);
+
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Log[]> GetLogsByDateAsync(DateTime date)
+        {
+            IQueryable<Log> query = _context.Logs;
+
+            var startDate = date.Date;
+            var endDate = date.Date.AddDays(1);
+
+            query = query
+              .Where(t => t.Timestamp >= startDate && t.Timestamp < endDate)
+              .OrderBy(t => t.Timestamp);
 
             return await query.ToArrayAsync();
         }

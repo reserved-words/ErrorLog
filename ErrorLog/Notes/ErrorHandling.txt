@@ -1,0 +1,13 @@
+﻿Minimum Status Codes:
+
+200 - OK - success
+400 - Bad Request - client did something wrong
+500 - Internal Error - server did something wrong
+
+Others
+
+201 - Created
+304 - Not Modified
+401 - Unauthorized
+404 - Not Found
+403 - Forbidden

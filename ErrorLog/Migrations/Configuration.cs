@@ -25,6 +25,7 @@ namespace ErrorLog.Migrations
                   {
                       Id = 1,
                       Name = "Stronger",
+                      Moniker = "stronger",
                       Logs = new List<Log>
                       {
                           new Log

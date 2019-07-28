@@ -8,6 +8,7 @@ namespace ErrorLog.Data
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Moniker { get; set; }
         public ICollection<Log> Logs { get; set; }
     }
 }
