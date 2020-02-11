@@ -11,10 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.DataAccess", "Erro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeploymentTools", "DeploymentTools", "{9F6DBF68-0F33-44D2-AFA2-B891F334738E}"
 	ProjectSection(SolutionItems) = preProject
-		..\GameDeals\DeploymentTools\AppSetUp.ps1 = ..\GameDeals\DeploymentTools\AppSetUp.ps1
-		..\GameDeals\DeploymentTools\RunDatabaseMigrater.ps1 = ..\GameDeals\DeploymentTools\RunDatabaseMigrater.ps1
-		..\GameDeals\DeploymentTools\SetupTools.psm1 = ..\GameDeals\DeploymentTools\SetupTools.psm1
-		..\GameDeals\DeploymentTools\UserRights.psm1 = ..\GameDeals\DeploymentTools\UserRights.psm1
+		DeploymentTools\AppSetUp.ps1 = DeploymentTools\AppSetUp.ps1
+		DeploymentTools\RunDatabaseMigrater.ps1 = DeploymentTools\RunDatabaseMigrater.ps1
+		DeploymentTools\SetupTools.psm1 = DeploymentTools\SetupTools.psm1
+		DeploymentTools\UserRights.psm1 = DeploymentTools\UserRights.psm1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrater", "DatabaseMigrater\DatabaseMigrater.csproj", "{103E5832-9FC5-49C4-B059-0167A0D14B18}"
