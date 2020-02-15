@@ -21,7 +21,7 @@ namespace ErrorLog.API.Controllers
         [HttpGet]
         public IEnumerable<Log> Get(string appName)
         {
-            using (var dbContext = new ApplicationDbContext(_configuration.GetConnectionString("logs")))
+            using (var dbContext = GetDbContext())
             {
                 return dbContext.Logs
                     .Where(lg => string.IsNullOrEmpty(appName) || lg.AppName == appName)
@@ -32,12 +32,17 @@ namespace ErrorLog.API.Controllers
         [HttpPost]
         public bool Post([FromBody]Log log)
         {
-            using (var dbContext = new ApplicationDbContext(_configuration.GetConnectionString("logs")))
+            using (var dbContext = GetDbContext())
             {
                 dbContext.Logs.Add(log);
                 dbContext.SaveChanges();
                 return true;
             }
+        }
+
+        private ApplicationDbContext GetDbContext()
+        {
+            return new ApplicationDbContext(_configuration.GetConnectionString("Logs"), _configuration["SchemaName"]);
         }
     }
 }

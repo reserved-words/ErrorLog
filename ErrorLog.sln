@@ -9,15 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.Common", "ErrorLog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.DataAccess", "ErrorLog.DataAccess\ErrorLog.DataAccess.csproj", "{ABC35C85-650D-4B27-BFEC-E40EB7B0F3C6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeploymentTools", "DeploymentTools", "{9F6DBF68-0F33-44D2-AFA2-B891F334738E}"
-	ProjectSection(SolutionItems) = preProject
-		DeploymentTools\AppSetUp.ps1 = DeploymentTools\AppSetUp.ps1
-		DeploymentTools\RunDatabaseMigrater.ps1 = DeploymentTools\RunDatabaseMigrater.ps1
-		DeploymentTools\SetupTools.psm1 = DeploymentTools\SetupTools.psm1
-		DeploymentTools\UserRights.psm1 = DeploymentTools\UserRights.psm1
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog.PreDeployment", "ErrorLog.PreDeployment\ErrorLog.PreDeployment.csproj", "{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrater", "DatabaseMigrater\DatabaseMigrater.csproj", "{103E5832-9FC5-49C4-B059-0167A0D14B18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog.PostDeployment", "ErrorLog.PostDeployment\ErrorLog.PostDeployment.csproj", "{A6F04D21-6E24-4C58-8008-448875789F85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +31,14 @@ Global
 		{ABC35C85-650D-4B27-BFEC-E40EB7B0F3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABC35C85-650D-4B27-BFEC-E40EB7B0F3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC35C85-650D-4B27-BFEC-E40EB7B0F3C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{103E5832-9FC5-49C4-B059-0167A0D14B18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{103E5832-9FC5-49C4-B059-0167A0D14B18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{103E5832-9FC5-49C4-B059-0167A0D14B18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{103E5832-9FC5-49C4-B059-0167A0D14B18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F04D21-6E24-4C58-8008-448875789F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F04D21-6E24-4C58-8008-448875789F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F04D21-6E24-4C58-8008-448875789F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F04D21-6E24-4C58-8008-448875789F85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

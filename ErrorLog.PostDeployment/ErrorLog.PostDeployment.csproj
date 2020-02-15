@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ErrorLog.DataAccess\ErrorLog.DataAccess.csproj" />
+    <PackageReference Include="PostDeploymentTools" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

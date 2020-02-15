@@ -1,20 +1,23 @@
 ﻿using ErrorLog.Common;
 using Microsoft.EntityFrameworkCore;
+using PostDeploymentTools;
 
 namespace ErrorLog.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : MigratableDbContext
     {
         private const string DefaultConnectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=apps;Integrated Security=True;";
+        private const string SchemaName = "dbo";
 
         private readonly string _connectionString;
 
         public ApplicationDbContext()
-            : this(DefaultConnectionString)
+            : this(DefaultConnectionString, SchemaName)
         {
         }
 
-        public ApplicationDbContext(string connectionString)
+        public ApplicationDbContext(string connectionString, string schemaName)
+            :base(connectionString, schemaName)
         {
             _connectionString = connectionString;
         }
