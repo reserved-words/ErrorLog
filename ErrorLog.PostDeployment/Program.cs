@@ -1,4 +1,5 @@
 ﻿using System;
+using ErrorLog.DataAccess;
 using PostDeploymentTools;
 
 namespace ErrorLog.PostDeployment
@@ -16,7 +17,7 @@ namespace ErrorLog.PostDeployment
             var schemaName = args[3];
 
             var postDeploymentService = new PostDeploymentService(appName, connectionString, databaseName, schemaName);
-            postDeploymentService.UpdateDatabase();
+            postDeploymentService.UpdateDatabase(() => new ApplicationDbContext(connectionString, schemaName));
             postDeploymentService.CreateApiUser();
             postDeploymentService.GrantApiPermission("SELECT, INSERT, UPDATE", "Logs");
         }
