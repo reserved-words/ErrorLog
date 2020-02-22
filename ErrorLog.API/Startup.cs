@@ -1,3 +1,5 @@
+using ErrorLog.Common;
+using ErrorLog.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,9 @@ namespace ErrorLog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<ILogAccess, LogsService>();
+            services.AddTransient<ILogger, LogsService>();
+            services.AddTransient<IBackupLogger, FileSystemLogger>();
 
             services.AddSwaggerGen(c =>
             {

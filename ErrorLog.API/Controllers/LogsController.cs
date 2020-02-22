@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using ErrorLog.Common;
-using ErrorLog.DataAccess;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace ErrorLog.API.Controllers
 {
@@ -11,38 +9,42 @@ namespace ErrorLog.API.Controllers
     [Route("[controller]")]
     public class LogsController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IBackupLogger _backupLogger;
+        private readonly ILogAccess _logAccess;
+        private readonly ILogger _logger;
 
-        public LogsController(IConfiguration configuration)
+        public LogsController(ILogger logger, IBackupLogger backupLogger, ILogAccess logAccess)
         {
-            _configuration = configuration;
+            _backupLogger = backupLogger;
+            _logAccess = logAccess;
+            _logger = logger;
         }
 
         [HttpGet]
         public IEnumerable<Log> Get(string appName)
         {
-            using (var dbContext = GetDbContext())
-            {
-                return dbContext.Logs
-                    .Where(lg => string.IsNullOrEmpty(appName) || lg.AppName == appName)
-                    .ToList();
-            }
+            return _logAccess.GetLogs(appName);
         }
 
         [HttpPost]
-        public bool Post([FromBody]Log log)
+        public IActionResult Post([FromBody]Log log)
         {
-            using (var dbContext = GetDbContext())
+            try
             {
-                dbContext.Logs.Add(log);
-                dbContext.SaveChanges();
-                return true;
+                _logger.Log(log);
+                return Ok("Logged to primary log");
             }
-        }
-
-        private ApplicationDbContext GetDbContext()
-        {
-            return new ApplicationDbContext(_configuration.GetConnectionString("Logs"), _configuration["SchemaName"]);
+            catch (Exception ex)
+            {
+                _backupLogger.Log(log);
+                _backupLogger.Log(new Log
+                {
+                    Timestamp = DateTime.Now,
+                    Message = $"Previous error logged to backup logger due to exception: {ex.Message}",
+                    AppName = "ErrorLog"
+                });
+                return Ok("Logged to backup log");
+            }
         }
     }
 }
