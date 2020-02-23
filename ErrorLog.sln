@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.Common", "ErrorLog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.DataAccess", "ErrorLog.DataAccess\ErrorLog.DataAccess.csproj", "{ABC35C85-650D-4B27-BFEC-E40EB7B0F3C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog.PreDeployment", "ErrorLog.PreDeployment\ErrorLog.PreDeployment.csproj", "{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.PreDeployment", "ErrorLog.PreDeployment\ErrorLog.PreDeployment.csproj", "{68726BE0-4AAF-447F-A848-D1D5DC27D8BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog.PostDeployment", "ErrorLog.PostDeployment\ErrorLog.PostDeployment.csproj", "{A6F04D21-6E24-4C58-8008-448875789F85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErrorLog.PostDeployment", "ErrorLog.PostDeployment\ErrorLog.PostDeployment.csproj", "{A6F04D21-6E24-4C58-8008-448875789F85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLog.Logger", "ErrorLog.Logger\ErrorLog.Logger.csproj", "{8D6E7D02-873F-42F0-AD78-5A03F8BEB2E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A6F04D21-6E24-4C58-8008-448875789F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F04D21-6E24-4C58-8008-448875789F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F04D21-6E24-4C58-8008-448875789F85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D6E7D02-873F-42F0-AD78-5A03F8BEB2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D6E7D02-873F-42F0-AD78-5A03F8BEB2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D6E7D02-873F-42F0-AD78-5A03F8BEB2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D6E7D02-873F-42F0-AD78-5A03F8BEB2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

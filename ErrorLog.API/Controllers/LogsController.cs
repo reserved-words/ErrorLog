@@ -27,8 +27,15 @@ namespace ErrorLog.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Log log)
+        public IActionResult Post([FromBody]LogContent logContent)
         {
+            var log = new Log
+            {
+                Timestamp = DateTime.Now,
+                AppName = logContent.AppName,
+                Message = logContent.Message
+            };
+
             try
             {
                 _logger.Log(log);
