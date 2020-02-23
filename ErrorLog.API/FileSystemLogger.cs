@@ -19,7 +19,7 @@ namespace ErrorLog.API
 
             var formatTimestamp = log.Timestamp.ToString("HH:mm:ss");
 
-            File.AppendAllText(filepath, $"{formatTimestamp}: {log.Message}");
+            File.AppendAllText(filepath, $"{formatTimestamp} {log.Message}{Environment.NewLine}");
         }
     }
 }
