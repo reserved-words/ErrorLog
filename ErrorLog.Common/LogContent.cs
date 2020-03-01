@@ -7,6 +7,6 @@ namespace ErrorLog.Common
     {
         public string Message { get; set; }
         [StringLength(50)]
-        public string AppName { get; set; }
+        public string ClientId { get; set; }
     }
 }

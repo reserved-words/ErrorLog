@@ -34,7 +34,7 @@ namespace ErrorLog.API.Controllers
             var log = new Log
             {
                 Timestamp = DateTime.Now,
-                AppName = logContent.AppName,
+                AppName = logContent.ClientId,
                 Message = logContent.Message
             };
 

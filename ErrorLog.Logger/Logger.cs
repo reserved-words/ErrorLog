@@ -62,7 +62,7 @@ namespace ErrorLog.Logger
             var request = new HttpRequestMessage(HttpMethod.Post, _loggingEndpoint);
 
             request.Content = new StringContent(
-                JsonConvert.SerializeObject(new { _clientId, message }),
+                JsonConvert.SerializeObject(new { ClientId = _clientId, Message = message }),
                 Encoding.UTF8, "application/json");
 
             var task = client.SendAsync(request);
