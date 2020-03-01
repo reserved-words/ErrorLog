@@ -11,19 +11,17 @@ namespace ErrorLog.Logger
     {
         private const string ApiScope = "LoggingAPI";
 
-        private readonly string _appName;
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _tokenEndpoint;
-        private readonly string _url;
+        private readonly string _loggingEndpoint;
 
-        public Logger(string appName, string clientId, string clientSecret, string tokenEndpoint, string url)
+        public Logger(string clientId, string clientSecret, string tokenEndpoint, string loggingEndpoint)
         {
-            _appName = appName;
             _clientId = clientId;
             _clientSecret = clientSecret;
             _tokenEndpoint = tokenEndpoint;
-            _url = url;
+            _loggingEndpoint = loggingEndpoint;
         }
 
         public void Log(Exception ex)
@@ -47,24 +45,24 @@ namespace ErrorLog.Logger
 
                 client.SetBearerToken(tokenResponse.AccessToken);
 
-                Send(client, _url, _appName, ex.Message);
-                Send(client, _url, _appName, ex.StackTrace);
+                Send(client, ex.Message);
+                Send(client, ex.StackTrace);
 
                 ex = ex.InnerException;
                 while (ex != null)
                 {
-                    Send(client, _url, _appName, ex.Message);
+                    Send(client, ex.Message);
                     ex = ex.InnerException;
                 }
             }
         }
 
-        private void Send(HttpClient client, string url, string appName, string message)
+        private void Send(HttpClient client, string message)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            var request = new HttpRequestMessage(HttpMethod.Post, _loggingEndpoint);
 
             request.Content = new StringContent(
-                JsonConvert.SerializeObject(new { appName, message }),
+                JsonConvert.SerializeObject(new { _clientId, message }),
                 Encoding.UTF8, "application/json");
 
             var task = client.SendAsync(request);
@@ -73,15 +71,15 @@ namespace ErrorLog.Logger
 
             if (!response.IsSuccessStatusCode)
             {
-                BackupLog(appName, message);
+                BackupLog(message);
             }
         }
 
-        private void BackupLog(string appName, string message)
+        private void BackupLog(string message)
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            var logDirectory = Path.Combine(appData, "ReservedWords", appName, "Logs");
+            var logDirectory = Path.Combine(appData, "ReservedWords", _clientId, "Logs");
             Directory.CreateDirectory(logDirectory);
 
             var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
