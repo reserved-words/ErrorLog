@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ErrorLog.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ErrorLog.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class LogsController : ControllerBase

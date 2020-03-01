@@ -6,33 +6,58 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ErrorLog.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration config)
         {
-            Configuration = configuration;
+            _config = config;
         }
 
-        public IConfiguration Configuration { get; }
+        public string[] ApiAllowedCorsOrigins => _config.GetValue<string>("AllowedCorsOrigins").Split(",");
+        public string ApiAuthorityUrl => _config.GetValue<string>("ApiAuthorityUrl");
+        public string ApiName => _config.GetValue<string>("ApiName");
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("1.0.0", new OpenApiInfo { Title = "ErrorLogAPI", Version = "1.0.0" });
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                //    Name = "Authorization",
+                //    In = ParameterLocation.Header,
+                //    Type = SecuritySchemeType.ApiKey
+                //});
+            });
+
             services.AddControllers();
             services.AddTransient<ILogAccess, LogsService>();
             services.AddTransient<ILogger, LogsService>();
             services.AddTransient<IBackupLogger, FileSystemLogger>();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("1.0.0", new OpenApiInfo { Title = "ErrorLogAPI", Version = "1.0.0" });
-            });
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = ApiAuthorityUrl;
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = ApiName;
+                });
+
+            services.AddCors();
+
+            services.AddMvcCore()
+                .AddApiExplorer()
+                .AddMvcOptions(opt => opt.EnableEndpointRouting = false)
+                .AddAuthorization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -47,14 +72,24 @@ namespace ErrorLog.API
                 c.SwaggerEndpoint("/swagger/1.0.0/swagger.json", "ErrorLogAPI 1.0.0");
             });
 
-            app.UseRouting();
+            app.UseCors(
+                options => options
+                    .WithOrigins(ApiAllowedCorsOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
 
-            app.UseAuthorization();
+            //app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            //app.UseAuthorization();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
+
+            app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }

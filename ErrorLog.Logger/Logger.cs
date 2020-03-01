@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IdentityModel.Client;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -8,32 +9,57 @@ namespace ErrorLog.Logger
 {
     public class Logger
     {
-        private readonly string _url;
-        private readonly string _appName;
+        private const string ApiScope = "LoggingAPI";
 
-        public Logger(string url, string appName)
+        private readonly string _appName;
+        private readonly string _clientId;
+        private readonly string _clientSecret;
+        private readonly string _tokenEndpoint;
+        private readonly string _url;
+
+        public Logger(string appName, string clientId, string clientSecret, string tokenEndpoint, string url)
         {
-            _url = url;
             _appName = appName;
+            _clientId = clientId;
+            _clientSecret = clientSecret;
+            _tokenEndpoint = tokenEndpoint;
+            _url = url;
         }
 
         public void Log(Exception ex)
         {
-            using (var httpClient = new HttpClient())
+            using (var client = new HttpClient())
             {
-                Send(httpClient, _url, _appName, ex.Message);
-                Send(httpClient, _url, _appName, ex.StackTrace);
+                var tokenTask = client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+                {
+                    Address = _tokenEndpoint,
+                    ClientId = _clientId,
+                    ClientSecret = _clientSecret,
+                    Scope = ApiScope
+                });
+                tokenTask.Wait();
+                var tokenResponse = tokenTask.Result;
+
+                if (tokenResponse.IsError)
+                {
+                    // tokenResponse.Error;
+                }
+
+                client.SetBearerToken(tokenResponse.AccessToken);
+
+                Send(client, _url, _appName, ex.Message);
+                Send(client, _url, _appName, ex.StackTrace);
 
                 ex = ex.InnerException;
                 while (ex != null)
                 {
-                    Send(httpClient, _url, _appName, ex.Message);
+                    Send(client, _url, _appName, ex.Message);
                     ex = ex.InnerException;
                 }
             }
         }
 
-        private void Send(HttpClient httpClient, string url, string appName, string message)
+        private void Send(HttpClient client, string url, string appName, string message)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
 
@@ -41,7 +67,7 @@ namespace ErrorLog.Logger
                 JsonConvert.SerializeObject(new { appName, message }),
                 Encoding.UTF8, "application/json");
 
-            var task = httpClient.SendAsync(request);
+            var task = client.SendAsync(request);
             task.Wait();
             var response = task.Result;
 
